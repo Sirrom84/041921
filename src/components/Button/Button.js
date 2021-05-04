@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 export default function MyButton(props) {
+	console.log("Hello", props);
 	return (
 		<Button type={props.type || "button"} onClick={props.onClick}>
 			{props.children}

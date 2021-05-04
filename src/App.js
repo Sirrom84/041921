@@ -2,7 +2,9 @@ import React, {useEffect, useState} from "react";
 import styled, {keyframes} from "styled-components";
 import PictureFrame from "./components/Frame/Frame";
 import Button from "./components/Button/Button";
-const handsomeBasset = require("./assets/handsomeBasset.jpeg");
+import FetchDoggyImage from "./Helpers/FetchDoggyImage";
+import handsomeBasset from "./assets/handsomeBasset.jpeg";
+// const handsomeBasset = require("./assets/handsomeBasset.jpeg");
 
 // const API = `https://dog.ceo/api/breeds/image/random`;
 
@@ -20,7 +22,7 @@ function App() {
 			<Body>
 				<Header>
 					<Logo>Sphere Pups</Logo>
-					<Button>GET MOAR PUPS</Button>
+					<Button onClick={FetchDoggyImage}>GET MOAR PUPS</Button>
 				</Header>
 
 				<PictureFrame>
