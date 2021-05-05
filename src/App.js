@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
-
-const handsomeBasset = require("./assets/handsomeBasset.jpeg");
-
-const API = `https://dog.ceo/api/breeds/image/random`;
+import React, {useState} from "react";
+import styled, {keyframes} from "styled-components";
+import PictureFrame from "./components/Frame/Frame";
+import Button from "./components/Button/Button";
+import handsomeBasset from "./assets/handsomeBasset.jpeg";
+import axios from "axios";
 
 /* 
 TODO / Feature Request: We need more pups! I know there are hundreds -- no, THOUSANDS of pups
@@ -14,24 +14,61 @@ INFO: if there are issues using hooks, this may be helpful: https://github.com/f
 */
 
 function App() {
-  return (
-    <div>
-      <Body>
-        <Header>
-          <Logo>Sphere Pups</Logo>
-          <Button>GET MOAR PUPS</Button>
-        </Header>
+	/////STATE/////
+	const [image, setImage] = useState(handsomeBasset);
+	const [prevImg, setPrevImg] = useState();
 
-        <Frame>
-          <Image src={handsomeBasset} />
-        </Frame>
+	/////Fetch Dog Image From API/////
+	const fetchDoggyImage = () => {
+		axios
+			.get("https://dog.ceo/api/breeds/image/random")
+			.then((response) => {
+				setPrevImg(image);
+				setImage(response.data.message);
+			})
+			.catch((err) => {
+				console.log("OOPS THERES AN ERROR", err);
+			});
+	};
+	////Back Button Helper/////
+	const previousDoggyImage = () => {
+		setImage(prevImg);
+	};
 
-        <Footer>© 1996</Footer>
-      </Body>
-    </div>
-  );
+	////APP////
+	return (
+		<div>
+			<Body>
+				<Header>
+					<Logo>Sphere Pups</Logo>
+				</Header>
+				<div className="photo-container">
+					{prevImg && (
+						<Button
+							onClick={previousDoggyImage}
+							setImage={setImage}
+							prevImg={prevImg}>
+							Back
+						</Button>
+					)}
+					<PictureFrame>
+						<Image src={image} />
+					</PictureFrame>
+					<Button
+						onClick={fetchDoggyImage}
+						setImage={setImage}
+						image={image}
+						setPrevImg={setPrevImg}>
+						GET MOAR PUPS
+					</Button>
+				</div>
+				<Footer>© 1996</Footer>
+			</Body>
+		</div>
+	);
 }
 
+/////STYLED COMPONENTS/////
 const Animation = keyframes`
   0% {
     transform: rotate(0deg);
@@ -48,100 +85,46 @@ const Animation = keyframes`
 `;
 
 const Body = styled.div`
-  background-color: #02208f;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  min-height: 100vh;
-  padding: 40px;
+	background-color: #4a274f;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	font-size: calc(10px + 2vmin);
+	min-height: 100vh;
+	padding: 40px;
 `;
 
 const Header = styled.div`
-  align-items: center;
-  height: 10vmin;
-  display: flex;
-  justify-content: space-between;
+	align-items: center;
+	height: 15vmin;
+	display: flex;
+	justify-content: space-between;
 `;
 
 const Logo = styled.h1`
-  animation: ${Animation} infinite 5s linear;
-  border-bottom: 5px solid red;
-  pointer-events: none;
-  user-select: none;
-`;
-
-const Button = styled.div`
-  --size: 10vmin;
-  background: #d7b90b;
-  border: 5px solid red;
-  border-radius: var(--size);
-  cursor: pointer;
-  height: var(--size);
-  font-size: 80%;
-  margin: 20px;
-  padding: 4px;
-  text-align: center;
-  transition: transform 100ms ease;
-  width: var(--size);
-
-  &:active {
-    transform: scale(0.8);
-  }
-`;
-
-const Frame = styled.div`
-  background-color: #d7b90b;
-  border: solid 5vmin #eee;
-  border-bottom-color: #fff;
-  border-left-color: #eee;
-  border-radius: 2px;
-  border-right-color: #eee;
-  border-top-color: #ddd;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25) inset,
-    0 5px 10px 5px rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  padding: 10px;
-  margin: auto;
-  position: relative;
-  text-align: center;
-  transform: rotate(-1deg);
-  &:before {
-    border-radius: 2px;
-    bottom: -2vmin;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25) inset;
-    content: "";
-    left: -2vmin;
-    position: absolute;
-    right: -2vmin;
-    top: -2vmin;
-  }
-  &:after {
-    border-radius: 2px;
-    bottom: -2.5vmin;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
-    content: "";
-    left: -2.5vmin;
-    position: absolute;
-    right: -2.5vmin;
-    top: -2.5vmin;
-  }
+	display: flex;
+	justify-content: center;
+	animation: ${Animation} infinite 5s linear;
+	border-bottom: 5px solid #f0a07c;
+	pointer-events: none;
+	user-select: none;
+	font-family: Mercury-Bold;
 `;
 
 const Image = styled.img`
-  align-self: center;
-  border-radius: 5px;
-  height: auto;
-  margin: auto;
-  width: 50vmin;
+	align-self: center;
+	border-radius: 5px;
+	height: auto;
+	margin: auto;
+	width: 50vmin;
 `;
 
 const Footer = styled.div`
-  display: flex;
-  font-size: 16px;
-  height: 20vmin;
-  justify-content: center;
-  width: 100%;
+	display: flex;
+	font-size: 16px;
+	height: 20vmin;
+	justify-content: center;
+	width: 100%;
 `;
 
 export default App;
