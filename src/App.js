@@ -14,12 +14,13 @@ INFO: if there are issues using hooks, this may be helpful: https://github.com/f
 */
 
 function App() {
-	/////Helpers/////
+	/////STATE/////
 	const [image, setImage] = useState(handsomeBasset);
 	const [prevImg, setPrevImg] = useState();
 
+	/////Fetch Dog Image From API/////
 	const fetchDoggyImage = () => {
-		return axios
+		axios
 			.get("https://dog.ceo/api/breeds/image/random")
 			.then((response) => {
 				setPrevImg(image);
@@ -29,7 +30,7 @@ function App() {
 				console.log("OOPS THERES AN ERROR", err);
 			});
 	};
-
+	////Back Button Helper/////
 	const previousDoggyImage = () => {
 		setImage(prevImg);
 	};
@@ -40,6 +41,19 @@ function App() {
 			<Body>
 				<Header>
 					<Logo>Sphere Pups</Logo>
+				</Header>
+				<div className="photo-container">
+					{prevImg && (
+						<Button
+							onClick={previousDoggyImage}
+							setImage={setImage}
+							prevImg={prevImg}>
+							Back
+						</Button>
+					)}
+					<PictureFrame>
+						<Image src={image} />
+					</PictureFrame>
 					<Button
 						onClick={fetchDoggyImage}
 						setImage={setImage}
@@ -47,26 +61,14 @@ function App() {
 						setPrevImg={setPrevImg}>
 						GET MOAR PUPS
 					</Button>
-					{prevImg && (
-						<Button
-							onClick={previousDoggyImage}
-							setImage={setImage}
-							prevImg={prevImg}>
-							Previous
-						</Button>
-					)}
-				</Header>
-				<PictureFrame>
-					<Image src={image} />
-				</PictureFrame>
-
+				</div>
 				<Footer>© 1996</Footer>
 			</Body>
 		</div>
 	);
 }
 
-/////STYLES/////
+/////STYLED COMPONENTS/////
 const Animation = keyframes`
   0% {
     transform: rotate(0deg);
@@ -83,7 +85,7 @@ const Animation = keyframes`
 `;
 
 const Body = styled.div`
-	background-color: #02208f;
+	background-color: #4a274f;
 	color: white;
 	display: flex;
 	flex-direction: column;
@@ -94,16 +96,19 @@ const Body = styled.div`
 
 const Header = styled.div`
 	align-items: center;
-	height: 10vmin;
+	height: 15vmin;
 	display: flex;
 	justify-content: space-between;
 `;
 
 const Logo = styled.h1`
+	display: flex;
+	justify-content: center;
 	animation: ${Animation} infinite 5s linear;
-	border-bottom: 5px solid red;
+	border-bottom: 5px solid #f0a07c;
 	pointer-events: none;
 	user-select: none;
+	font-family: Mercury-Bold;
 `;
 
 const Image = styled.img`

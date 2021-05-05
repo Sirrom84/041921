@@ -2,25 +2,19 @@ import React from "react";
 import styled from "styled-components";
 
 export default function MyButton(props) {
-	// function FetchDoggyImage() {
-	// 	return axios
-	// 		.get("https://dog.ceo/api/breeds/image/random")
-	// 		.then((response) => {
-	// 			// console.log(response.data.message, "response image");
-	// 			props.setPrevImg(props.image);
-	// 			props.setImage(response.data.message);
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log("OOPS THERES AN ERROR", err);
-	// 		});
-	// }
-
 	return <Button onClick={props.onClick}>{props.children}</Button>;
 }
+
+//STYLES//
+
 const Button = styled.div`
 	--size: 10vmin;
-	background: #d7b90b;
-	border: 5px solid red;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #f0a07c;
+	overflow: hidden;
+	border: 5px solid white;
 	border-radius: var(--size);
 	cursor: pointer;
 	height: var(--size);
@@ -30,8 +24,16 @@ const Button = styled.div`
 	text-align: center;
 	transition: transform 100ms ease;
 	width: var(--size);
+	font-family: Mercury-Bold;
 
 	&:active {
 		transform: scale(0.8);
+	}
+
+	&:hover {
+		background-color: #ffffff40;
+		-webkit-box-shadow: 10px 10px 99px 6px rgba(76, 201, 240, 1);
+		-moz-box-shadow: 10px 10px 99px 6px rgba(76, 201, 240, 1);
+		box-shadow: 10px 10px 99px 6px rgba(76, 201, 240, 1);
 	}
 `;
