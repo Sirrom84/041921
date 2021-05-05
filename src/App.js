@@ -2,11 +2,8 @@ import React, {useState} from "react";
 import styled, {keyframes} from "styled-components";
 import PictureFrame from "./components/Frame/Frame";
 import Button from "./components/Button/Button";
-import Previous from "./components/Previous/Previous";
 import handsomeBasset from "./assets/handsomeBasset.jpeg";
-// const handsomeBasset = require("./assets/handsomeBasset.jpeg");
-
-// const API = `https://dog.ceo/api/breeds/image/random`;
+import axios from "axios";
 
 /* 
 TODO / Feature Request: We need more pups! I know there are hundreds -- no, THOUSANDS of pups
@@ -17,20 +14,46 @@ INFO: if there are issues using hooks, this may be helpful: https://github.com/f
 */
 
 function App() {
+	/////Helpers/////
 	const [image, setImage] = useState(handsomeBasset);
 	const [prevImg, setPrevImg] = useState();
+
+	const fetchDoggyImage = () => {
+		return axios
+			.get("https://dog.ceo/api/breeds/image/random")
+			.then((response) => {
+				setPrevImg(image);
+				setImage(response.data.message);
+			})
+			.catch((err) => {
+				console.log("OOPS THERES AN ERROR", err);
+			});
+	};
+
+	const previousDoggyImage = () => {
+		setImage(prevImg);
+	};
+
+	////APP////
 	return (
 		<div>
 			<Body>
 				<Header>
 					<Logo>Sphere Pups</Logo>
-					<Button setImage={setImage} image={image} setPrevImg={setPrevImg}>
+					<Button
+						onClick={fetchDoggyImage}
+						setImage={setImage}
+						image={image}
+						setPrevImg={setPrevImg}>
 						GET MOAR PUPS
 					</Button>
 					{prevImg && (
-						<Previous setImage={setImage} prevImg={prevImg}>
+						<Button
+							onClick={previousDoggyImage}
+							setImage={setImage}
+							prevImg={prevImg}>
 							Previous
-						</Previous>
+						</Button>
 					)}
 				</Header>
 				<PictureFrame>
@@ -43,6 +66,7 @@ function App() {
 	);
 }
 
+/////STYLES/////
 const Animation = keyframes`
   0% {
     transform: rotate(0deg);

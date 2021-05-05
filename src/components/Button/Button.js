@@ -1,22 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import axios from "axios";
 
 export default function MyButton(props) {
-	function FetchDoggyImage() {
-		return axios
-			.get("https://dog.ceo/api/breeds/image/random")
-			.then((response) => {
-				// console.log(response.data.message, "response image");
-				props.setPrevImg(props.image);
-				props.setImage(response.data.message);
-			})
-			.catch((err) => {
-				console.log("OOPS THERES AN ERROR", err);
-			});
-	}
+	// function FetchDoggyImage() {
+	// 	return axios
+	// 		.get("https://dog.ceo/api/breeds/image/random")
+	// 		.then((response) => {
+	// 			// console.log(response.data.message, "response image");
+	// 			props.setPrevImg(props.image);
+	// 			props.setImage(response.data.message);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log("OOPS THERES AN ERROR", err);
+	// 		});
+	// }
 
-	return <Button onClick={FetchDoggyImage}>{props.children}</Button>;
+	return <Button onClick={props.onClick}>{props.children}</Button>;
 }
 const Button = styled.div`
 	--size: 10vmin;
